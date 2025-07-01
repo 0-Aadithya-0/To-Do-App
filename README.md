@@ -1,3 +1,3 @@
-# to_do
+# TO-DO
 
-A new Flutter project.
+A Flutter based project for productivity.
