@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do/Components/Popbox.dart';
 import 'package:to_do/Components/Tile.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:to_do/data/database.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -11,15 +12,27 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  List tasks = [];
   final controller = TextEditingController();
 
-  final Mybox = Hive.openBox("MyBox");
+  final Mybox = Hive.box("MyBox");
+  Database db = Database();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (Mybox.get("TO-DO") == null) {
+      db.Firsttime_init();
+    } else {
+      db.db_load();
+    }
+  }
 
   void Onsave() {
     setState(() {
-      tasks.add(controller.text);
+      db.tasks.add([controller.text, false]);
     });
+    db.db_update();
     controller.clear();
     Navigator.of(context).pop();
   }
@@ -31,8 +44,9 @@ class _HomepageState extends State<Homepage> {
 
   void delete_tile(int index) {
     setState(() {
-      tasks.removeAt(index);
+      db.tasks.removeAt(index);
     });
+    db.db_update();
   }
 
   @override
@@ -70,11 +84,12 @@ class _HomepageState extends State<Homepage> {
         padding: const EdgeInsets.only(top: 12),
 
         child: ListView.builder(
-          itemCount: tasks.length,
+          itemCount: db.tasks.length,
           itemBuilder: (context, index) {
             return Tile(
-              taskname: tasks[index],
+              taskname: db.tasks[index][0],
               delete_function: (context) => delete_tile(index),
+              init_touched: db.tasks[index][1],
             );
           },
         ),

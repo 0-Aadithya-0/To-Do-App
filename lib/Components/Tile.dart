@@ -3,16 +3,28 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Tile extends StatefulWidget {
   final String taskname;
+  final bool init_touched;
   final Function(BuildContext)? delete_function;
 
-  Tile({super.key, required this.taskname, required this.delete_function});
+  Tile({
+    super.key,
+    required this.taskname,
+    required this.delete_function,
+    required this.init_touched,
+  });
 
   @override
   State<Tile> createState() => _TileState();
 }
 
 class _TileState extends State<Tile> {
-  bool is_touched = false;
+  late bool is_touched;
+  @override
+  void initState() {
+    super.initState();
+
+    is_touched = widget.init_touched;
+  }
 
   void touch() {
     setState(() {
@@ -38,7 +50,7 @@ class _TileState extends State<Tile> {
               ),
             ],
           ),
-          
+
           child: Container(
             width: 400,
             padding: const EdgeInsets.all(25),
@@ -49,7 +61,7 @@ class _TileState extends State<Tile> {
             child: Text(
               widget.taskname,
               textAlign: TextAlign.center,
-        
+
               style: TextStyle(
                 fontSize: is_touched ? 17 : 18,
                 decoration:

@@ -4,7 +4,7 @@ import "package:hive_flutter/hive_flutter.dart";
 void main() async {
   await Hive.initFlutter();
   runApp(const MainApp());
-  var box = await Hive.openBox("MyBox")
+  
 }
 
 class MainApp extends StatelessWidget {
