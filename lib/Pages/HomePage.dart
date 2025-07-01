@@ -73,7 +73,7 @@ class _HomepageState extends State<Homepage> {
           itemCount: tasks.length,
           itemBuilder: (context, index) {
             return Tile(
-              tasksname: tasks[index],
+              taskname: tasks[index],
               delete_function: (context) => delete_tile(index),
             );
           },
