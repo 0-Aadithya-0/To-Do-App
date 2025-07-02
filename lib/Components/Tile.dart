@@ -1,50 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class Tile extends StatefulWidget {
+
+class Tile extends StatelessWidget{
   final String taskname;
-  final bool init_touched;
+  final bool touch;
+  final Function() touch_function;
+  //final bool init_touched;
   final Function(BuildContext)? delete_function;
 
   Tile({
     super.key,
     required this.taskname,
     required this.delete_function,
-    required this.init_touched,
-  });
-
-  @override
-  State<Tile> createState() => _TileState();
-}
-
-class _TileState extends State<Tile> {
-  late bool is_touched;
-  @override
-  void initState() {
-    super.initState();
-
-    is_touched = widget.init_touched;
-  }
-
-  void touch() {
-    setState(() {
-      is_touched = !is_touched;
+    required this.touch_function, 
+    required this.touch,
+    
     });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
       child: GestureDetector(
-        onTap: touch,
+        onTap: touch_function,
         child: Slidable(
           endActionPane: ActionPane(
             motion: StretchMotion(),
             children: [
               SlidableAction(
                 borderRadius: BorderRadius.circular(12),
-                onPressed: widget.delete_function,
+                onPressed: delete_function,
                 icon: Icons.delete,
                 backgroundColor: const Color.fromARGB(255, 237, 61, 49),
               ),
@@ -55,17 +41,17 @@ class _TileState extends State<Tile> {
             width: 400,
             padding: const EdgeInsets.all(25),
             decoration: BoxDecoration(
-              color: is_touched ? Colors.grey.shade600 : Colors.amberAccent,
+              color: touch ? Colors.grey.shade600 : Colors.amberAccent,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              widget.taskname,
+              taskname,
               textAlign: TextAlign.center,
 
               style: TextStyle(
-                fontSize: is_touched ? 17 : 18,
+                fontSize: touch ? 17 : 18,
                 decoration:
-                    is_touched
+                    touch
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
                 decorationThickness: 3,

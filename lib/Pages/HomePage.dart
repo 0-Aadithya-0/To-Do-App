@@ -14,7 +14,6 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final controller = TextEditingController();
 
-  
   Database db = Database();
 
   @override
@@ -27,6 +26,7 @@ class _HomepageState extends State<Homepage> {
       db.db_load();
     }
   }
+
 
   void Onsave() {
     setState(() {
@@ -46,6 +46,13 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       db.tasks.removeAt(index);
     });
+    db.db_update();
+  }
+
+  void touch_toggle(int index) {
+    setState(() {
+  db.tasks[index][1]= !db.tasks[index][1];
+  });
     db.db_update();
   }
 
@@ -88,8 +95,9 @@ class _HomepageState extends State<Homepage> {
           itemBuilder: (context, index) {
             return Tile(
               taskname: db.tasks[index][0],
+              touch: db.tasks[index][1],
               delete_function: (context) => delete_tile(index),
-              init_touched: db.tasks[index][1],
+              touch_function: () => touch_toggle(index),
             );
           },
         ),
