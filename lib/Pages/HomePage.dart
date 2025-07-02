@@ -14,13 +14,13 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final controller = TextEditingController();
 
-  final Mybox = Hive.box("MyBox");
+  
   Database db = Database();
 
   @override
   void initState() {
     super.initState();
-
+    final Mybox = Hive.box("MyBox");
     if (Mybox.get("TO-DO") == null) {
       db.Firsttime_init();
     } else {
