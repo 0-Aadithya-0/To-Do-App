@@ -38,7 +38,7 @@ class Tile extends StatelessWidget{
           ),
 
           child: Container(
-            width: 400,
+            width: double.infinity,
             padding: const EdgeInsets.all(25),
             decoration: BoxDecoration(
               color: touch ? Colors.grey.shade600 : Colors.amberAccent,
@@ -47,7 +47,7 @@ class Tile extends StatelessWidget{
             child: Text(
               taskname,
               textAlign: TextAlign.center,
-
+          
               style: TextStyle(
                 fontSize: touch ? 17 : 18,
                 decoration:
@@ -58,8 +58,8 @@ class Tile extends StatelessWidget{
               ),
             ),
           ),
-        ),
       ),
+    )
     );
   }
 }
