@@ -19,16 +19,24 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    final Mybox = Hive.box("MyBox");
-    if (Mybox.get("TO-DO") == null) {
+    final myBox = Hive.box("MyBox");
+    if (myBox.get("TO-DO") == null) {
       db.Firsttime_init();
     } else {
       db.db_load();
     }
   }
 
+  void onReorderTiles(oldindex,newindex){
+    setState(() {
+      final List tile = db.tasks.removeAt(oldindex);
+      db.tasks.insert(newindex, tile);
+    });
+    db.db_update();
 
-  void Onsave() {
+  }
+  
+  void onSave() {
     setState(() {
       db.tasks.add([controller.text, false]);
     });
@@ -37,19 +45,19 @@ class _HomepageState extends State<Homepage> {
     Navigator.of(context).pop();
   }
 
-  void Oncancel() {
+  void onCancel() {
     controller.clear();
     Navigator.of(context).pop();
   }
 
-  void delete_tile(int index) {
+  void deleteTile(int index) {
     setState(() {
       db.tasks.removeAt(index);
     });
     db.db_update();
   }
 
-  void touch_toggle(int index) {
+  void touchToggle(int index) {
     setState(() {
   db.tasks[index][1]= !db.tasks[index][1];
   });
@@ -75,8 +83,8 @@ class _HomepageState extends State<Homepage> {
             builder: (context) {
               return Popbox(
                 controller: controller,
-                Oncancel: Oncancel,
-                Onsave: Onsave,
+                Oncancel: onCancel,
+                Onsave: onSave,
               );
             },
           );
@@ -90,14 +98,15 @@ class _HomepageState extends State<Homepage> {
       body: Padding(
         padding: const EdgeInsets.only(top: 12),
 
-        child: ListView.builder(
+        child: ReorderableListView.builder(
+          onReorder: (oldIndex, newIndex) => onReorderTiles(oldIndex,newIndex) ,
           itemCount: db.tasks.length,
           itemBuilder: (context, index) {
             return Tile(
               taskname: db.tasks[index][0],
               touch: db.tasks[index][1],
-              delete_function: (context) => delete_tile(index),
-              touch_function: () => touch_toggle(index),
+              delete_function: (context) => deleteTile(index),
+              touch_function: () => touchToggle(index),
             );
           },
         ),

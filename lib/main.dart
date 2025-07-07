@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Pages/HomePage.dart';
+import 'Pages/home_page.dart';
 import "package:hive_flutter/hive_flutter.dart";
 void main() async {
   await Hive.initFlutter();
