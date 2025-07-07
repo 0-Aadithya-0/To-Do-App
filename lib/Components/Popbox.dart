@@ -18,14 +18,18 @@ class Popbox extends StatelessWidget {
         height: 150,
         child: Column(
           children: [
-            TextField(
-              controller: controller,
-              cursorColor: Colors.black,
-               enableInteractiveSelection: true,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black))
-                )
+
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TextField(
+                controller: controller,
+                cursorColor: Colors.black,
+                 enableInteractiveSelection: true,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black))
+                  )
+              ),
             ),
             Row(
               children: [

@@ -10,11 +10,14 @@ class Mybutton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:EdgeInsets.only(top: 30),
-      child: MaterialButton(
-        color: Color.fromARGB(255, 32, 32, 32),
-        textColor: const Color.fromARGB(255, 222, 222, 222),
+      child:ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 32, 32, 32),
+          shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+          padding: EdgeInsets.symmetric(horizontal: 30)
+          ),
         onPressed: onPressed,
-        child: Text(name)),
+        child: Text(name,style: TextStyle(color:const Color.fromARGB(255, 222, 222, 222)),)),
     ) ;
       
   }

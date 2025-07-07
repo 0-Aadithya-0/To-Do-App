@@ -29,13 +29,16 @@ class _HomepageState extends State<Homepage> {
 
   void onReorderTiles(oldindex,newindex){
     setState(() {
+      if(oldindex < newindex){
+        newindex --;
+      }
       final List tile = db.tasks.removeAt(oldindex);
-      db.tasks.insert(newindex, tile);
+      db.tasks.insert(newindex, tile); 
     });
     db.db_update();
 
   }
-  
+
   void onSave() {
     setState(() {
       db.tasks.add([controller.text, false]);
@@ -99,10 +102,19 @@ class _HomepageState extends State<Homepage> {
         padding: const EdgeInsets.only(top: 12),
 
         child: ReorderableListView.builder(
+          proxyDecorator: (Widget child, int index, Animation<double> animation) {
+            return Material(
+              color: Colors.transparent,
+              elevation: 10.0, 
+              shadowColor: Colors.black,
+              child: child, // The original child is placed inside our new widget.
+              );
+          },
           onReorder: (oldIndex, newIndex) => onReorderTiles(oldIndex,newIndex) ,
           itemCount: db.tasks.length,
           itemBuilder: (context, index) {
             return Tile(
+              key: ValueKey(db.tasks[index]),
               taskname: db.tasks[index][0],
               touch: db.tasks[index][1],
               delete_function: (context) => deleteTile(index),
