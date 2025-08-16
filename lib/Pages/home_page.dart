@@ -11,39 +11,47 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage>
+    with SingleTickerProviderStateMixin {
   final controller = TextEditingController();
-
+  late TabController _tabController;
   Database db = Database();
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
     final myBox = Hive.box("MyBox");
-    if (myBox.get("TO-DO") == null) {
+    if (myBox.get("Daily") == null) {
       db.Firsttime_init();
     } else {
-      db.db_load();
+      db.loadDB();
     }
   }
 
-  void onReorderTiles(oldindex,newindex){
+  void onReorderTiles(oldindex, newindex, List list) {
     setState(() {
-      if(oldindex < newindex){
-        newindex --;
+      if (oldindex < newindex) {
+        newindex--;
       }
-      final List tile = db.tasks.removeAt(oldindex);
-      db.tasks.insert(newindex, tile); 
+      final List tile = list.removeAt(oldindex);
+      list.insert(newindex, tile);
     });
-    db.db_update();
-
+    db.updateDB();
   }
 
   void onSave() {
     setState(() {
-      db.tasks.add([controller.text, false]);
+      int currentIndex = _tabController.index;
+      if (currentIndex == 0) {
+        db.dailyTasks.add([controller.text, false]);
+      } else if (currentIndex == 1) {
+        db.weeklyTasks.add([controller.text, false]);
+      } else {
+        db.monthlyTasks.add([controller.text, false]);
+      }
     });
-    db.db_update();
+    db.updateDB();
     controller.clear();
     Navigator.of(context).pop();
   }
@@ -53,19 +61,51 @@ class _HomepageState extends State<Homepage> {
     Navigator.of(context).pop();
   }
 
-  void deleteTile(int index) {
+  void deleteTile(int index, List list) {
     setState(() {
-      db.tasks.removeAt(index);
+      list.removeAt(index);
     });
-    db.db_update();
+    db.updateDB();
   }
 
-  void touchToggle(int index) {
+  void touchToggle(int index, List list) {
     setState(() {
-  db.tasks[index][1]= !db.tasks[index][1];
-  });
-    db.db_update();
+      list[index][1] = !list[index][1];
+    });
+    db.updateDB();
   }
+
+  Widget buildReorderableList(List taskList) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: ReorderableListView.builder(
+        proxyDecorator: (
+                    Widget child,
+                    int index,
+                    Animation<double> animation,
+                  ) {
+                    return Material(
+                      color: Colors.transparent,
+                      elevation: 10.0,
+                      shadowColor: Colors.black,
+                      child: child,
+                    );
+                  },
+        onReorder: (oldIndex, newIndex) => onReorderTiles(oldIndex, newIndex, taskList),
+        itemCount: taskList.length,
+        itemBuilder: (context, index) {
+          return Tile(
+            key: ValueKey(taskList[index]),
+            taskname: taskList[index][0],
+            touch: taskList[index][1],
+            delete_function: (context) => deleteTile(index, taskList),
+            touch_function: () => touchToggle(index, taskList),
+          );
+        },
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +117,17 @@ class _HomepageState extends State<Homepage> {
         backgroundColor: Colors.amberAccent,
         elevation: 3,
         shadowColor: Colors.black,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.black,
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.black54,
+          tabs: const [
+            Tab(text: "Daily"),
+            Tab(text: "Weekly"),
+            Tab(text: "Monthly"),
+          ],
+        ),
       ),
 
       floatingActionButton: FloatingActionButton(
@@ -98,30 +149,16 @@ class _HomepageState extends State<Homepage> {
         child: Icon(Icons.add),
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.only(top: 12),
-
-        child: ReorderableListView.builder(
-          proxyDecorator: (Widget child, int index, Animation<double> animation) {
-            return Material(
-              color: Colors.transparent,
-              elevation: 10.0, 
-              shadowColor: Colors.black,
-              child: child, // The original child is placed inside our new widget.
-              );
-          },
-          onReorder: (oldIndex, newIndex) => onReorderTiles(oldIndex,newIndex) ,
-          itemCount: db.tasks.length,
-          itemBuilder: (context, index) {
-            return Tile(
-              key: ValueKey(db.tasks[index]),
-              taskname: db.tasks[index][0],
-              touch: db.tasks[index][1],
-              delete_function: (context) => deleteTile(index),
-              touch_function: () => touchToggle(index),
-            );
-          },
-        ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          
+      buildReorderableList(db.dailyTasks),
+               
+      buildReorderableList(db.weeklyTasks),
+      
+      buildReorderableList(db.monthlyTasks),
+        ]
       ),
     );
   }

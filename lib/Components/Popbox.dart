@@ -6,7 +6,7 @@ class Popbox extends StatelessWidget {
   final VoidCallback Onsave;
   final VoidCallback Oncancel;
 
-  Popbox({super.key,required this.controller,required this.Oncancel,required this.Onsave});
+  const Popbox({super.key,required this.controller,required this.Oncancel,required this.Onsave});
   
   
   @override

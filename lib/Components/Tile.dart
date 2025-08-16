@@ -9,7 +9,7 @@ class Tile extends StatelessWidget{
   //final bool init_touched;
   final Function(BuildContext)? delete_function;
 
-  Tile({
+  const Tile({
     super.key,
     required this.taskname,
     required this.delete_function,
