@@ -3,7 +3,11 @@
 A straightforward and efficient To-Do application built with Flutter. It helps you organize your tasks into daily, weekly, and monthly views, with all data stored locally using the Hive database.
 
 ## 🎥 Demo
+
+
 ![App Demo](.lib/assets/demo.gif)
+
+
 ## ✨ Features
 
 *   **Tabbed Navigation:** Easily switch between Daily, Weekly, and Monthly task lists.
