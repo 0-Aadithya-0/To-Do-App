@@ -4,11 +4,10 @@ A straightforward and efficient To-Do application built with Flutter. It helps y
 
 ## 🎥 Demo
 
-![App Demo](./lib/assets/demo.gif)
-
 <p align="center">
 <img src="/lib/assets/demo.gif" alt="App Demo" width="500"/>
 </p>
+
 ## ✨ Features
 
 *   **Tabbed Navigation:** Easily switch between Daily, Weekly, and Monthly task lists.
