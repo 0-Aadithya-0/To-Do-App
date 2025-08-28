@@ -5,7 +5,7 @@ A straightforward and efficient To-Do application built with Flutter. It helps y
 ## 🎥 Demo
 
 <p align="center">
-<img src="./assets/demo.gif" alt="App Demo" width="500"/>
+<img src=".lib/assets/demo.gif" alt="App Demo" width="500"/>
 </p>
 
 ## ✨ Features
