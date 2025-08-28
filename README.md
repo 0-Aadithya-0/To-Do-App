@@ -1,11 +1,11 @@
-# Flutter To-Do App
+# To-Do App
 
 A straightforward and efficient To-Do application built with Flutter. It helps you organize your tasks into daily, weekly, and monthly views, with all data stored locally using the Hive database.
 
 ## 🎥 Demo
 
 <p align="center">
-<img src=".lib/assets/demo.gif" alt="App Demo" width="500"/>
+<img src="lib/assets/demo.gif" alt="App Demo" width="500"/>
 </p>
 
 ## ✨ Features
@@ -16,9 +16,9 @@ A straightforward and efficient To-Do application built with Flutter. It helps y
 *   **Drag & Drop Prioritization:** Reorder tasks within each list to manage your priorities.
 *   **Local Data Persistence:** Uses the Hive database for fast and efficient local storage, so your tasks are always saved on your device.
 *   **User-Friendly Interface:** A clean and intuitive UI for a seamless user experience.
-*   **Zero permissons Required:** Complete privacy.
+*   **Zero Permissions Required:** Complete privacy.
 
-## 🛠️ Technologies Used
+## 🛠️ Tech-Stack
 
 *   **Framework:** Flutter
 *   **Programming Language:** Dart
@@ -44,7 +44,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```sh
     cd your-project-name
     ```
-3.  **Install the necessary dependencies:**
+3.  **Install dependencies:**
     ```sh
     flutter pub get
     ```
